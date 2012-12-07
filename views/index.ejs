@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= title %></title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+    <script type="text/javascript" src="/socket.io/socket.io.js"></script>
+    <script type="text/javascript" src="/javascripts/chat.js"></script>
+  </head>
+  <body>
+	<h1><%= title %></h1>
+	<p>Welcome to <%= title %></p>
+	<input id="message" type="text"></input>
+	<input id="update" type="submit" value="update"></input>
+	<ul id="posts"></ul>
+  </body>
+</html>
