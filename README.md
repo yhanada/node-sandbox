@@ -1,4 +1,4 @@
 node-sandbox
 ============
 
-node.js sandbox
+node.js sandbox for nodejitsu
