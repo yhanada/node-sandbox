@@ -1,17 +1,20 @@
 // Express
 var express = require('express')
   , http = require('http')
-  , app = express()
+	//  , app = express()
+	, app = express.createServer()
   ;
 
 app.use(express.static(__dirname + '/public'));
 
-var server = http.createServer(app).listen(3000);
+//var server = http.createServer(app).listen(3000);
+app.listen(3000);
 console.log('server start:', 3000);
 
 // Socket.IO
-var io = require('socket.io')
-  , io = io.listen(server)
+var socketio = require('socket.io')
+	//  , io = io.listen(server)
+	, io = socketio.listen(app)
   ;
 
 io.sockets.on('connection', function(socket) {
