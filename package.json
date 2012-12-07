@@ -1,14 +1,16 @@
 {
   "name": "chat",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "main": "server.js",
   "dependencies": {
-    "express": "2.5.x",
-    "socket.io": "0.8.x"
+    "express": "3.x",
+    "socket.io": "0.9.x"
+  },
+  "subdomain": "chat.yhanada",
+  "scripts": {
+    "start": "server.js"
   },
   "engines": {
-  			 "node": "0.6.13",
-			 "npm": "1.1.41"
-  },
-  "license": "MIT"
+    "node": "0.8.x"
+  }
 }
