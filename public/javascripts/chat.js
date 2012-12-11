@@ -2,6 +2,7 @@ $(function() {
   var socket   = io.connect()
     , $posts   = $('ul#posts')
     , $message = $('input#message')
+    , $roomId  = $('input#room_id')
     ;
 
   socket.on('login', function(data) {
@@ -17,7 +18,7 @@ $(function() {
   $('input#update').on('click', function(e) {
     var message = $message.val();
     if (message.length === 0) return;
-    socket.emit('post', message);
+    socket.emit('post', {message: message, room_id: $roomId.val()} );
     $message.val('');
   });
 });

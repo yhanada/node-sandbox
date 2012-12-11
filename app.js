@@ -6,6 +6,7 @@
 var express = require('express')
   , routes = require('./routes')
   , http = require('http')
+  , model = require('./model')
   , path = require('path');
 
 var app = express();
@@ -29,24 +30,50 @@ app.configure('development', function(){
 });
 
 app.get('/', routes.index);
+app.get('/chat', routes.chat);
 
-/*
-http.createServer(app).listen(app.get('port'), function(){
-  console.log("Express server listening on port " + app.get('port'));
-});
-*/
 var server = http.createServer(app);
 server.listen(app.get('port'), function(){
 	console.log("Express server listening on port " + app.get('port'));
 });
 
+// models
+var Comment = model.Comment;
+var Room = model.Room;
+
+var count = Room.count({}, function(err, count) {
+  if (count === 0) {
+    if (!err) {
+      var newRoom = new Room();
+      newRoom.title = 'test';
+      newRoom.save(function(err) {
+        if (err) {
+          console.error('Failed to save');
+        }
+      });
+    }
+  }
+});
+
 // Socket.IO
 var socketio = require('socket.io')
-	, io = socketio.listen(server)
-	;
+  , io = socketio.listen(server)
+  ;
 io.sockets.on('connection', function(socket) {
-	io.sockets.emit('login', socket.id);
-	socket.on('post', function(data) {
-		io.sockets.emit('post', { id: socket.id, post: data });
-	});
+  io.sockets.emit('login', socket.id);
+
+  socket.on('post', function(data) {
+    var newComment = new Comment();
+    newComment.message = data.message;
+    newComment.room_id = data.room_id;
+    newComment.user_name = socket.id;
+    newComment.save(function(err) {
+      if (err) {
+        console.log(err);
+      } else {
+        io.sockets.emit('post', { id: socket.id, post: data.message });
+      }
+    });
+  });
 });
+
