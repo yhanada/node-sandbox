@@ -67,6 +67,7 @@ io.sockets.on('connection', function(socket) {
     newComment.message = data.message;
     newComment.room_id = data.room_id;
     newComment.user_name = socket.id;
+    newComment.created = Date.now();
     newComment.save(function(err) {
       if (err) {
         console.log(err);
