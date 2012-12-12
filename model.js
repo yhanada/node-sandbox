@@ -5,7 +5,7 @@
 
 var mongoose = require('mongoose');
 // MongoDB
-var db = mongoose.connect('mongodb://nodejitsu_yhanada:7lqjapp128oo3tchhfo1tkt9ci@ds043927.mongolab.com:43927/nodejitsu_yhanada_nodejitsudb2646426684');
+var db = mongoose.connect(process.env.MONGODB);
 
 var Schema = mongoose.Schema;
 
