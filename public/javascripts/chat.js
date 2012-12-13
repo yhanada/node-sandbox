@@ -3,9 +3,19 @@ $(function() {
     , $posts   = $('ul#posts')
     , $message = $('input#message')
     , $roomId  = $('input#room_id')
+    , $status  = $('#status')
     ;
 
+  socket.on('connect', function(data) {
+    $status.text('connecting');
+  });
+
+  socket.on('disconnect', function(data) {
+    $status.text('disconnect');
+  });
+
   socket.on('login', function(data) {
+    $status.text('connected');
     var $li = $('<li>').text(data + ' joined.');
     $posts.prepend($li);
   });
