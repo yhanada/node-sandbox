@@ -21,6 +21,7 @@ app.configure(function(){
   app.use(express.methodOverride());
   app.use(express.cookieParser('your secret here'));
   app.use(express.session());
+  app.use(routes.userAuthentication);// insert user middleware
   app.use(app.router);
   app.use(express.static(path.join(__dirname, 'public')));
 });
@@ -55,13 +56,13 @@ io.sockets.on('connection', function(socket) {
     var newComment = new Comment();
     newComment.message = data.message;
     newComment.room_id = data.room_id;
-    newComment.user_name = socket.id;
+    newComment.user_name = routes.getUser(data.user_id).name;//socket.id;
     newComment.created = Date.now();
     newComment.save(function(err) {
       if (err) {
         console.log(err);
       } else {
-        io.sockets.emit('post', { id: socket.id, post: data.message });
+        io.sockets.emit('post', { id: socket.id, post: data.message, user_name: routes.getUser(data.user_id).name });
       }
     });
   });

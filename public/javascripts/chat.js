@@ -3,6 +3,7 @@ $(function() {
     , $posts   = $('ul#posts')
     , $message = $('input#message')
     , $roomId  = $('input#room_id')
+    , $userId  = $('input#user_id')
     , $status  = $('#status')
     ;
 
@@ -21,14 +22,14 @@ $(function() {
   });
 
   socket.on('post', function(data) {
-    var $li = $('<li>').text(data.id + ' say: ' + data.post);
+    var $li = $('<li>').text(data.user_name + ' say: ' + data.post);
     $posts.prepend($li);
   });
 
   $('input#update').on('click', function(e) {
     var message = $message.val();
     if (message.length === 0) return;
-    socket.emit('post', {message: message, room_id: $roomId.val()} );
+    socket.emit('post', {message: message, room_id: $roomId.val(), user_id:$userId.val()} );
     $message.val('');
   });
 
