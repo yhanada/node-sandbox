@@ -11,7 +11,7 @@ exports.index = function(req, res){
     for(var i = 0; i < docs.length; i++) {
       rooms.push(docs[i]);
     }
-    res.render('index', { title: 'WS Chat', rooms: rooms });
+    res.render('index', { title: 'WS Chat', rooms: rooms, user: req.user });
   });
 };
 
@@ -55,7 +55,31 @@ exports.chat = function(req, res){
         console.log(comments[i].message);
       }
 
-      res.render('chat', { title: title, roomId: roomId, comments: comments });
+      res.render('chat', { title: title, roomId: roomId, comments: comments, user: req.user });
     });
   });
+};
+
+//Array to keep users.
+var users = new Array();
+users[0] = null;
+exports.getUsers = function(){
+  return users;
+};
+
+exports.getUser = function(userId){
+  return users[userId];
+};
+
+
+//Middleware to authenticate user. Dummy.
+exports.userAuthentication = function(req, res, next){
+  if( req.session.userId == null){
+    users.push({id:users.length, name:"第"+(users.length)+"ユーザー"});
+    req.session.userId = users.length-1;
+  }
+  
+  req.user = users[req.session.userId];
+  
+  next();
 };
