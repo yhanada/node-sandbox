@@ -31,4 +31,13 @@ $(function() {
     socket.emit('post', {message: message, room_id: $roomId.val()} );
     $message.val('');
   });
+
+  // handle enter key
+  $('#message').keypress(function(e) {
+    if (e.which === 13) {
+      $(this).blur();
+      $('input#update').click();
+      $(this).focus();
+    }
+  });
 });

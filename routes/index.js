@@ -51,7 +51,6 @@ exports.chat = function(req, res){
         // TODO:500
         return;
       }
-      comments = comments.reverse();
       for(var i = 0; i < comments.length; i++) {
         console.log(comments[i].message);
       }
