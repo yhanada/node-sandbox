@@ -31,6 +31,7 @@ app.configure('development', function(){
 
 app.get('/', routes.index);
 app.get('/chat', routes.chat);
+app.post('/create', routes.create);
 
 var server = http.createServer(app);
 server.listen(app.get('port'), function(){
@@ -39,21 +40,6 @@ server.listen(app.get('port'), function(){
 
 // models
 var Comment = model.Comment;
-var Room = model.Room;
-
-var count = Room.count({}, function(err, count) {
-  if (count === 0) {
-    if (!err) {
-      var newRoom = new Room();
-      newRoom.title = 'test';
-      newRoom.save(function(err) {
-        if (err) {
-          console.error('Failed to save');
-        }
-      });
-    }
-  }
-});
 
 // Socket.IO
 var socketio = require('socket.io')

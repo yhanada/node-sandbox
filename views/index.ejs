@@ -8,6 +8,15 @@
   <body>
     <h1><%= title %></h1>
     <p>Welcome to <%= title %></p>
+    <h2>create room</h2>
+    <div>
+      <form method="POST" action="/create">
+        <input type="text" name="name" id="name" />
+        <input type="submit" value="create"/>
+      </form>
+    </div>
+
+    <h2>rooms</h2>
     <ul id="rooms">
     <% for(var i in rooms) { %>
       <li>

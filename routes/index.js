@@ -15,6 +15,24 @@ exports.index = function(req, res){
   });
 };
 
+exports.create = function(req, res) {
+  if (!req.body.name) {
+    // TOOD:error
+  }
+  var roomName = req.body.name;
+  var Room = model.Room;
+  var newRoom = new Room();
+  newRoom.title = roomName;
+  newRoom.save(function(err) {
+    if (!err) {
+      res.redirect('/chat?id=' + newRoom._id);
+    } else {
+      console.error('Failed to save');
+      res.redirect('/');
+    }
+  });
+};
+
 exports.chat = function(req, res){
   var Room = model.Room;
   var Comment = model.Comment;
