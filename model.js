@@ -7,6 +7,12 @@ var mongoose = require('mongoose');
 // MongoDB
 var db = mongoose.connect(process.env.MONGODB);
 
+//autoIndex setting depends on enviroments
+var enableAutoIndex = false;
+if( process.env.NODE_ENV == 'development'){
+  enableAutoIndex = true;
+}
+
 var Schema = mongoose.Schema;
 
 function validator(v) {
@@ -19,14 +25,14 @@ function validator(v) {
 // User
 var UserSchema = new Schema({
   name: { type: String, validate: [validator, "Empty Error"] }
-});
+}, { autoIndex: enableAutoIndex });
 
 exports.User = db.model('User', UserSchema);
 
 // Room
 var RoomSchema = new Schema({
   title: { type: String, validate: [validator, "Empty Error"] }
-});
+}, { autoIndex: enableAutoIndex });
 
 exports.Room = db.model('Room', RoomSchema);
 
@@ -36,6 +42,6 @@ var CommentSchema = new Schema({
   , room_id: { type: String }
   , user_name: { type: String, validate: [validator, "Empty Error"] }
   , created: { type: Date, default: Date.now() }
-});
+}, { autoIndex: enableAutoIndex });
 
 exports.Comment = db.model('Comment', CommentSchema);
