@@ -7,15 +7,15 @@ $(function() {
     ;
 
   socket.on('connect', function(data) {
-    $status.text('connecting');
+    $status.removeClass().addClass('connecting');
   });
 
   socket.on('disconnect', function(data) {
-    $status.text('disconnect');
+    $status.removeClass().addClass('disconnect');
   });
 
   socket.on('login', function(data) {
-    $status.text('connected');
+    $status.removeClass().addClass('connected');
     var $li = $('<li>').text(data + ' joined.');
     $posts.prepend($li);
   });

@@ -6,3 +6,18 @@ body {
 a {
   color: #00B7FF;
 }
+
+#status.connected:after {
+	content: 'connected';
+	color: #00ff7f;
+}
+
+#status.connecting:after {
+	content: 'connecting';
+	color: #000000;
+}
+
+#status.disconnect:after {
+	content: 'disconnect';
+	color: red;
+}
