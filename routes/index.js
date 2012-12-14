@@ -203,6 +203,7 @@ exports.goSignIn = function(req, res, next){
               //res.redirect( "/");
             }).on('error', function(e) {
               console.log("Got error: " + e.message);
+              console.log(e.toString());
               res.redirect( "/signIn?error="+encodeURIComponent(e.message));
             });
           });
