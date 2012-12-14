@@ -29,7 +29,20 @@ $(function() {
   $('input#update').on('click', function(e) {
     var message = $message.val();
     if (message.length === 0) return;
-    socket.emit('post', {message: message, room_id: $roomId.val(), user_id:$userId.val()} );
+    $.ajax({
+      type: 'post',
+      url: '/comment',
+      data: {
+        message: message,
+        room_id: $roomId.val()
+      },
+      success: function(data, dataType) {
+        console.log('comment success:' + data);
+      },
+      error: function(req, status, error) {
+        console.log('comment error:' + status);
+      }
+    });
     $message.val('');
   });
 

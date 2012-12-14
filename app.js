@@ -36,14 +36,12 @@ app.configure('production', function(){
 app.get('/', routes.index);
 app.get('/chat', routes.chat);
 app.post('/create', routes.create);
+app.post('/comment', routes.comment);
 
 var server = http.createServer(app);
 server.listen(app.get('port'), function(){
 	console.log("Express server listening on port " + app.get('port'));
 });
-
-// models
-var Comment = model.Comment;
 
 // Socket.IO
 var socketio = require('socket.io')
@@ -51,20 +49,6 @@ var socketio = require('socket.io')
   ;
 io.sockets.on('connection', function(socket) {
   io.sockets.emit('login', socket.id);
-
-  socket.on('post', function(data) {
-    var newComment = new Comment();
-    newComment.message = data.message;
-    newComment.room_id = data.room_id;
-    newComment.user_name = routes.getUser(data.user_id).name;//socket.id;
-    newComment.created = Date.now();
-    newComment.save(function(err) {
-      if (err) {
-        console.log(err);
-      } else {
-        io.sockets.emit('post', { id: socket.id, post: data.message, user_name: routes.getUser(data.user_id).name });
-      }
-    });
-  });
 });
 
+routes.io = io;

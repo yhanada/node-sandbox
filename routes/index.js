@@ -60,6 +60,29 @@ exports.chat = function(req, res){
   });
 };
 
+exports.comment = function(req, res){
+  var message = req.body.message;
+  var roomId = req.body.room_id;
+  if (message && roomId) {
+    var Comment = model.Comment;
+    var newComment = new Comment();
+    newComment.message = message;
+    newComment.room_id = roomId;
+    newComment.user_name = req.user.name;
+    newComment.created = Date.now();
+    newComment.save(function(err) {
+      if (err) {
+        console.log(err);
+      } else {
+        exports.io.sockets.emit('post', {post: message, user_name: req.user.name } );
+      }
+    });
+    res.send('OK');
+  } else {
+    res.send(500);
+  }
+};
+
 //Array to keep users.
 var users = new Array();
 users[0] = null;
