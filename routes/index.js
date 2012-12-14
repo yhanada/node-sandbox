@@ -167,20 +167,30 @@ exports.goSignIn = function(req, res, next){
               "access_token="+accessToken;
             //To get user infos
             https.get( graphUrl, function( graphRes){
+              var chunk = null;
               if( graphRes.statusCode != 200){
                 res.redirect( "/signIn");
               }else{
                 graphRes.on('data', function(d) {
-                  userJson = JSON.parse(d.toString());
-                  
+                  if (chunk === null) {
+                    chunk = d;
+                  } else {
+                    chunk += d;
+                  }
+
+                });
+                graphRes.on('end', function() {
+                  console.log('chunk=' + chunk.toString());
+                  var userJson = JSON.parse(chunk.toString());
+
                   //Put user data into.. Array
                   var fbUserId = Number(userJson["id"]);
                   users[fbUserId] = {id:fbUserId, name:userJson["name"]};
                   console.log("%j",users[fbUserId]);
-                  
+
                   //Set ID into session
                   req.session.userId = fbUserId;
-                  
+
                   res.redirect( "/");
                 });
               }
