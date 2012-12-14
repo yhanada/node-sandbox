@@ -40,6 +40,10 @@ app.post('/create', routes.create);
 app.post('/comment', routes.comment);
 app.post('/status', routes.status);
 
+//To authenticate via facebook
+app.get('/signIn', routes.signIn);
+app.get('/goSignIn', routes.goSignIn);
+
 var server = http.createServer(app);
 server.listen(app.get('port'), function(){
 	console.log("Express server listening on port " + app.get('port'));
