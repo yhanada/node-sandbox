@@ -36,13 +36,14 @@ exports.create = function(req, res) {
 };
 
 exports.chat = function(req, res){
+  res.send(404);
   var Room = model.Room;
   var Comment = model.Comment;
 
   var roomId = req.query.id ? req.query.id : 0;
   Room.findById(roomId, function(err, room) {
     if (err) {
-      // TODO:404
+      res.send(404);
       return;
     }
 
@@ -50,13 +51,9 @@ exports.chat = function(req, res){
     var query = Comment.find({room_id: roomId}).sort('-created').limit(10);
     query.exec(function(err, comments) {
       if (err) {
-        // TODO:500
+        res.send(500);
         return;
       }
-      for(var i = 0; i < comments.length; i++) {
-        console.log(comments[i].message);
-      }
-
       res.render('chat', { title: title, roomId: roomId, comments: comments, user: req.user });
     });
   });

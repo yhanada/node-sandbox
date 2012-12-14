@@ -4,6 +4,7 @@ $(function() {
     , $message = $('input#message')
     , $roomId  = $('input#room_id')
     , $status  = $('#status')
+    , $messages = $('#messages')
     ;
 
   var changeStatus = function(type, fn) {
@@ -86,6 +87,7 @@ $(function() {
   });
 
   $('#leave').on('click', function(e) {
+    $messages.hide();
     socket.disconnect();
   });
 });
