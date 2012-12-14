@@ -133,7 +133,13 @@ exports.userAuthentication = function(req, res, next){
 
 //Login page
 exports.signIn = function(req, res, next){
-  res.render('signIn', {});
+  var error = null;
+  if( req.query.error != null){
+    error = req.query.error;
+    console.log(error);
+  }
+  
+  res.render('signIn', {error:error});
 };
 
 //Login exec
@@ -197,13 +203,13 @@ exports.goSignIn = function(req, res, next){
               //res.redirect( "/");
             }).on('error', function(e) {
               console.log("Got error: " + e.message);
-              res.redirect( "/signIn");
+              res.redirect( "/signIn?error="+encodeURIComponent(e.message));
             });
           });
         }
       }).on('error', function(e) {
         console.log("Got error: " + e.message);
-        res.redirect( "/signIn");
+        res.redirect( "/signIn?error="+encodeURIComponent(e.message));
       });
     }else{
       res.redirect( "/signIn");
