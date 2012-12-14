@@ -3,6 +3,8 @@
  * GET home page.
  */
 var model = require('../model');
+var https = require('https');
+var querystring = require('querystring');
 
 exports.index = function(req, res){
   var rooms = new Array();
@@ -89,20 +91,99 @@ users[0] = null;
 exports.getUsers = function(){
   return users;
 };
-
 exports.getUser = function(userId){
   return users[userId];
 };
 
+//var crypto = require('crypto');
+//Set up FB application
+var appId = process.env.FB_APP_ID;;
+var appSecret = process.env.FB_APP_SECRET;;
+var appUrl = "";
+if( process.env.NODE_ENV == 'development'){
+  appUrl = "http://localhost:3000/goSignIn";
+} else{
+  appUrl = "http://chat.yhanada.jit.su/goSignIn";
+}
 
 //Middleware to authenticate user. Dummy.
 exports.userAuthentication = function(req, res, next){
-  if( req.session.userId == null){
-    users.push({id:users.length, name:"第"+(users.length)+"ユーザー"});
-    req.session.userId = users.length-1;
+  if( req.session.userId != null){
+    req.user = users[req.session.userId];
+    next();
+  }else if( req.url.indexOf("/goSignIn") != -1 || req.url.indexOf("/signIn") != -1){
+    next();
+  }else{
+    res.redirect("/signIn");
   }
-  
-  req.user = users[req.session.userId];
-  
-  next();
+};
+
+//Login page
+exports.signIn = function(req, res, next){
+  res.render('signIn', {});
+};
+
+//Login exec
+exports.goSignIn = function(req, res, next){
+  if( req.query.code == null){
+    //To go to facebook dialog
+    req.session.state = "63315";//Todo:generate hash.
+      
+    var authUrl = "https://www.facebook.com/dialog/oauth?"+
+                  "client_id="+appId+"&redirect_uri="+encodeURIComponent(appUrl)+
+                  "&state="+req.session.state;
+    
+    res.redirect( authUrl);  
+  }else{
+    //back to app from facebook outh
+    if( req.query.state != null && req.query.state == req.session.state){
+      var code = req.query.code;
+      var tokenUrl = "https://graph.facebook.com/oauth/access_token?"+
+                      "client_id="+appId+"&redirect_uri="+encodeURIComponent(appUrl)+
+                      "&client_secret="+appSecret+"&code="+code;
+      //To get access token
+      https.get( tokenUrl, function( tokenRes){
+        if( tokenRes.statusCode != 200){
+          res.redirect( "/signIn");
+        }else{
+          tokenRes.on('data', function(d) {
+            var query = d.toString();//split(":");
+            var parsed = querystring.parse(query/*[1]*/);
+            var accessToken = parsed.access_token;
+            var graphUrl = "https://graph.facebook.com/me?"+
+              "access_token="+accessToken;
+            //To get user infos
+            https.get( graphUrl, function( graphRes){
+              if( graphRes.statusCode != 200){
+                res.redirect( "/signIn");
+              }else{
+                graphRes.on('data', function(d) {
+                  userJson = JSON.parse(d.toString());
+                  
+                  //Put user data into.. Array
+                  var fbUserId = Number(userJson["id"]);
+                  users[fbUserId] = {id:fbUserId, name:userJson["name"]};
+                  console.log("%j",users[fbUserId]);
+                  
+                  //Set ID into session
+                  req.session.userId = fbUserId;
+                  
+                  res.redirect( "/");
+                });
+              }
+              //res.redirect( "/");
+            }).on('error', function(e) {
+              console.log("Got error: " + e.message);
+              res.redirect( "/signIn");
+            });
+          });
+        }
+      }).on('error', function(e) {
+        console.log("Got error: " + e.message);
+        res.redirect( "/signIn");
+      });
+    }else{
+      res.redirect( "/signIn");
+    }
+  }
 };
