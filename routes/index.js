@@ -36,7 +36,6 @@ exports.create = function(req, res) {
 };
 
 exports.chat = function(req, res){
-  res.send(404);
   var Room = model.Room;
   var Comment = model.Comment;
 
