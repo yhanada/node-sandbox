@@ -3,22 +3,52 @@ $(function() {
     , $posts   = $('ul#posts')
     , $message = $('input#message')
     , $roomId  = $('input#room_id')
-    , $userId  = $('input#user_id')
     , $status  = $('#status')
     ;
 
+  var changeStatus = function(type, fn) {
+    $.ajax({
+      type: 'post',
+      url: '/status',
+      data: {
+        type: type
+      },
+      success: function(data, dataType) {
+        if (fn) fn();
+        console.log('status success:' + data);
+      },
+      error: function(req, status, error) {
+        if (fn) fn(error);
+        console.log('status error:' + status);
+      }
+    });
+  };
+
   socket.on('connect', function(data) {
-    $status.removeClass().addClass('connecting');
+    changeStatus('join', function(err) {
+      if (!err) {
+        $status.removeClass().addClass('connected');
+      }
+    });
   });
 
   socket.on('disconnect', function(data) {
+    changeStatus('leave', function(err) {
+      window.location = '/';
+    });
     $status.removeClass().addClass('disconnect');
   });
 
-  socket.on('login', function(data) {
-    $status.removeClass().addClass('connected');
-    var $li = $('<li>').text(data + ' joined.');
-    $posts.prepend($li);
+  socket.on('status', function(data) {
+    var $li = null;
+    if (data.type === 'join') {
+      $li = $('<li>').text(data.user_name + ' joined.');
+    } else if (data.type === 'leave') {
+      $li = $('<li>').text(data.user_name + ' left.');
+    }
+    if ($li) {
+      $posts.prepend($li);
+    }
   });
 
   socket.on('post', function(data) {
@@ -53,5 +83,9 @@ $(function() {
       $('input#update').click();
       $(this).focus();
     }
+  });
+
+  $('#leave').on('click', function(e) {
+    socket.disconnect();
   });
 });

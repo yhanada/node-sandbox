@@ -8,13 +8,12 @@
     <script type="text/javascript" src="/javascripts/chat.js"></script>
   </head>
   <body>
-    <a href="/">Top</a>
+    <button id="leave">Leave</button>
     <h1><%= title %></h1>
     <h2><%= user.name %></h2>
     <div>status:<span id="status"/></div>
     <input id="message" type="text"></input>
     <input id="room_id" type="hidden" value="<%= roomId %>"></input>
-    <input id="user_id" type="hidden" value="<%= user.id %>"></input>
     <input id="update" type="submit" value="update"></input>
     <ul id="posts">
     <% for(var i in comments) { %>

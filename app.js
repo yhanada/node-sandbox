@@ -4,6 +4,7 @@
  */
 
 var express = require('express')
+  , socketio = require('socket.io')
   , routes = require('./routes')
   , http = require('http')
   , model = require('./model')
@@ -37,6 +38,7 @@ app.get('/', routes.index);
 app.get('/chat', routes.chat);
 app.post('/create', routes.create);
 app.post('/comment', routes.comment);
+app.post('/status', routes.status);
 
 var server = http.createServer(app);
 server.listen(app.get('port'), function(){
@@ -44,11 +46,4 @@ server.listen(app.get('port'), function(){
 });
 
 // Socket.IO
-var socketio = require('socket.io')
-  , io = socketio.listen(server)
-  ;
-io.sockets.on('connection', function(socket) {
-  io.sockets.emit('login', socket.id);
-});
-
-routes.io = io;
+routes.io = socketio.listen(server);
