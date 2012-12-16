@@ -17,9 +17,16 @@
       <input id="room_id" type="hidden" value="<%= roomId %>"></input>
       <input id="update" type="submit" value="update"></input>
       <ul id="posts">
-      <% for(var i in comments) { %>
-        <li><%= comments[i].user_name + ' say: ' + comments[i].message %></li>
-      <% } %>
+        <% for(var i in comments) { %>
+          <li>
+            <% if(comments[i].user_id == user.id){ %>
+              <span style="display:inline-block;width:75px;text-align:right;"><strong>You</strong>:</span>
+            <% }else{ %>
+              <span style="display:inline-block;width:75px;text-align:right;"><%= comments[i].user_name %>:</span>
+            <% } %>
+            <span><%= comments[i].message %></span>
+          </li>
+        <% } %>
       </ul>
     </div>
   </body>
