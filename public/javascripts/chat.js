@@ -53,7 +53,18 @@ $(function() {
   });
 
   socket.on('post', function(data) {
-    var $li = $('<li>').text(data.user_name + ' say: ' + data.post);
+    //Pick a user id for current user.
+    var $userId = $('#user_id').text();
+    
+    var line = "";
+    if( data.user_id == $userId){
+      line = '<span style="display:inline-block;width:75px;text-align:right;"><strong>You</strong>:</span>';
+    }else{
+      line = data.user_id+'<span style="display:inline-block;width:75px;text-align:right;">'+data.user_name+':</span>';
+    }
+    line += '<span>'+data.post+'</span>';
+
+    var $li = $('<li>').html(line);
     $posts.prepend($li);
   });
 
