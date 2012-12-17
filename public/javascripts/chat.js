@@ -57,10 +57,17 @@ $(function() {
     var $userId = $('#user_id').text();
     
     var line = "";
-    if( data.user_id == $userId){
-      line = '<span style="display:inline-block;width:75px;text-align:right;"><strong>You</strong>:</span>';
+    
+    if(data.user_id == undefined){
+      line += '<img src="http://graph.facebook.com/1/picture"/>';
     }else{
-      line = data.user_id+'<span style="display:inline-block;width:75px;text-align:right;">'+data.user_name+':</span>';
+      line += '<img src="http://graph.facebook.com/'+data.user_id+'/picture"/>';
+    }
+
+    if( data.user_id == $userId){
+      line += '<span style="display:inline-block;width:75px;text-align:right;"><strong>You</strong>:</span>';
+    }else{
+      line += data.user_id+'<span style="display:inline-block;width:75px;text-align:right;">'+data.user_name+':</span>';
     }
     line += '<span>'+data.post+'</span>';
 
