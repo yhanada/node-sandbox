@@ -193,6 +193,7 @@ exports.goSignIn = function(req, res, next){
 
                   //Set ID into session
                   req.session.userId = fbUserId;
+                  req.session.fbAccessToken = accessToken;
 
                   res.redirect( "/");
                 });
