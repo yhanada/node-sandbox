@@ -66,13 +66,14 @@ exports.comment = function(req, res){
     var newComment = new Comment();
     newComment.message = message;
     newComment.room_id = roomId;
+    newComment.user_id = req.user.id;
     newComment.user_name = req.user.name;
     newComment.created = Date.now();
     newComment.save(function(err) {
       if (err) {
         console.log(err);
       } else {
-        exports.io.sockets.emit('post', {post: message, user_name: req.user.name } );
+        exports.io.sockets.emit('post', {post: message, user_name: req.user.name, user_id: req.user.id } );
       }
     });
     res.send('OK');
@@ -187,7 +188,7 @@ exports.goSignIn = function(req, res, next){
 
                   //Put user data into.. Array
                   var fbUserId = Number(userJson["id"]);
-                  users[fbUserId] = {id:fbUserId, name:userJson["name"]};
+                  users[fbUserId] = {id:fbUserId, name:userJson["first_name"]};
                   console.log("%j",users[fbUserId]);
 
                   //Set ID into session

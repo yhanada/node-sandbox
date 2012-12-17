@@ -40,6 +40,7 @@ exports.Room = db.model('Room', RoomSchema);
 var CommentSchema = new Schema({
   message: { type: String, validate: [validator, "Empty Error"] }
   , room_id: { type: String }
+  , user_id: { type: String }
   , user_name: { type: String, validate: [validator, "Empty Error"] }
   , created: { type: Date, default: Date.now() }
 }, { autoIndex: enableAutoIndex });
