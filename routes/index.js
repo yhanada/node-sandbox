@@ -73,7 +73,7 @@ exports.comment = function(req, res){
       if (err) {
         console.log(err);
       } else {
-        exports.io.sockets.emit('post', {post: message, user_name: req.user.name, user_id: req.user.id } );
+        exports.io.sockets.emit('post', {post: message, user_name: req.user.name, user_id: req.user.id, room_id: roomId} );
       }
     });
     res.send('OK');
