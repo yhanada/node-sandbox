@@ -20,6 +20,11 @@
       <ul id="posts">
         <% for(var i in comments) { %>
           <li>
+            <% if(comments[i].user_id == undefined){ %>
+              <img src="http://graph.facebook.com/1/picture"/>
+            <% }else{ %>
+              <img src="http://graph.facebook.com/<%= comments[i].user_id %>/picture"/>
+            <% } %>
             <% if(comments[i].user_id == user.id){ %>
               <span style="display:inline-block;width:75px;text-align:right;"><strong>You</strong>:</span>
             <% }else{ %>
