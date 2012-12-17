@@ -53,6 +53,13 @@ $(function() {
   });
 
   socket.on('post', function(data) {
+    //Pick a current room ID.
+    var roomId = $('#room_id').attr('value');
+    if( data.room_id != roomId){
+      //if this post isn't for this room.
+      return;
+    }
+    
     //Pick a user id for current user.
     var $userId = $('#user_id').text();
     
