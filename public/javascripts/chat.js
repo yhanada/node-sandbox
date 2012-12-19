@@ -12,7 +12,8 @@ $(function() {
       type: 'post',
       url: '/status',
       data: {
-        type: type
+        type: type,
+        room_id: $roomId.val()
       },
       success: function(data, dataType) {
         if (fn) fn();
@@ -42,6 +43,10 @@ $(function() {
 
   socket.on('status', function(data) {
     var $li = null;
+    var roomId = data.room_id;
+    if ($roomId.val() !== roomId) {
+      return;
+    }
     if (data.type === 'join') {
       $li = $('<li>').text(data.user_name + ' joined.');
     } else if (data.type === 'leave') {

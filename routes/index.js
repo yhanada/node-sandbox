@@ -84,11 +84,12 @@ exports.comment = function(req, res){
 
 exports.status = function(req, res){
   var type = req.body.type;
+  var roomId = req.body.room_id;
   if (type === 'join') {
-    exports.io.sockets.emit('status', {type: type, user_name: req.user.name } );
+    exports.io.sockets.emit('status', {type: type, user_name: req.user.name, room_id: roomId } );
     res.send('OK');
   } else if (type === 'leave') {
-    exports.io.sockets.emit('status', {type: type, user_name: req.user.name } );
+    exports.io.sockets.emit('status', {type: type, user_name: req.user.name, room_id: roomId } );
     res.send('OK');
   } else {
     res.send(404);
