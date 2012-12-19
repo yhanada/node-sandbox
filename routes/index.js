@@ -140,12 +140,19 @@ exports.signIn = function(req, res, next){
   res.render('signIn', {error:error});
 };
 
+var uuid = function(){
+  var S4 = function() {
+    return (((1+Math.random())*0x10000)|0).toString(16).substring(1);
+  }
+  return (S4()+S4()+"-"+S4()+"-"+S4()+"-"+S4()+"-"+S4()+S4() +S4());
+};
+
 //Login exec
 exports.goSignIn = function(req, res, next){
   if( req.query.code == null){
     //To go to facebook dialog
-    req.session.state = "63315";//Todo:generate hash.
-      
+    req.session.state = uuid();
+
     var authUrl = "https://www.facebook.com/dialog/oauth?"+
                   "client_id="+appId+"&redirect_uri="+encodeURIComponent(appUrl)+
                   "&state="+req.session.state;
@@ -169,6 +176,7 @@ exports.goSignIn = function(req, res, next){
             var accessToken = parsed.access_token;
             var graphUrl = "https://graph.facebook.com/me?"+
               "access_token="+accessToken;
+            console.log('access to:' + graphUrl);
             //To get user infos
             https.get( graphUrl, function( graphRes){
               var chunk = null;
