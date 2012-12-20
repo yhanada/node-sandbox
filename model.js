@@ -30,8 +30,11 @@ var UserSchema = new Schema({
 exports.User = db.model('User', UserSchema);
 
 // Room
+var defaultDate = new Date("2012/12/5 15:00");
 var RoomSchema = new Schema({
   title: { type: String, validate: [validator, "Empty Error"] }
+  , created: { type: Date, default: defaultDate }
+  , updated: { type: Date, default: defaultDate }
 }, { autoIndex: enableAutoIndex });
 
 exports.Room = db.model('Room', RoomSchema);

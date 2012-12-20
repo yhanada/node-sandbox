@@ -9,7 +9,7 @@ var querystring = require('querystring');
 exports.index = function(req, res){
   var rooms = new Array();
   var Room = model.Room;
-  Room.find().exec(function(err, docs) {
+  Room.find().sort({ created: 1, updated: -1}).exec(function(err, docs) {
     for(var i = 0; i < docs.length; i++) {
       rooms.push(docs[i]);
     }
@@ -25,6 +25,7 @@ exports.create = function(req, res) {
   var Room = model.Room;
   var newRoom = new Room();
   newRoom.title = roomName;
+  newRoom.created = newRoom.updated = Date.now();
   newRoom.save(function(err) {
     if (!err) {
       res.redirect('/chat?id=' + newRoom._id);
@@ -77,6 +78,10 @@ exports.comment = function(req, res){
       }
     });
     res.send('OK');
+    
+    //To modify a updated time of this room.
+    model.Room.findByIdAndUpdate( roomId, {$set: { updated:newComment.created}}, function(error, room){});
+    
   } else {
     res.send(500);
   }
