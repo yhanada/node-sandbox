@@ -53,7 +53,7 @@ server.listen(app.get('port'), function(){
 var io = socketio.listen(server);
 io.configure(function () {
   io.set("transports", ["xhr-polling"]);
-  io.set("polling duration", 60);
+  io.set("polling duration", 10);
 });
 
 routes.io = io;
