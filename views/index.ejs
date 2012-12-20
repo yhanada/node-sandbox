@@ -22,7 +22,10 @@
     <ul id="rooms">
     <% for(var i in rooms) { %>
       <li>
-        <a href="/chat?id=<%= rooms[i]._id %>"><%= rooms[i].title %></a>
+        <span style="display:inline-block;width:90px;text-align:left;">
+          <a href="/chat?id=<%= rooms[i]._id %>"><%= rooms[i].title %></a>
+        </span>
+        <span><%= rooms[i].updated.toLocaleString() %></span>
       </li>
     <% } %>
     </ul>
