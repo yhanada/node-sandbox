@@ -8,6 +8,11 @@ body {
 		padding: 10px;
 	}
 }
+@media screen and (max-width: 320px) {
+	body {
+		padding: 10px;
+	}
+}
 
 a {
   color: #00B7FF;
