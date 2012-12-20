@@ -119,7 +119,7 @@ var appUrl = "";
 if( process.env.NODE_ENV == 'development'){
   appUrl = "http://localhost:3000/goSignIn";
 } else{
-  appUrl = "http://chat.yhanada.jit.su/goSignIn";
+  appUrl = process.env.FB_CALLBACK_URL;
 }
 
 //Middleware to authenticate user. Dummy.

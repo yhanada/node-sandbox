@@ -9,11 +9,10 @@
     <script type="text/javascript" src="/javascripts/chat.js"></script>
   </head>
   <body>
-    <button id="leave">Leave</button>
     <h1><%= title %></h1>
-    <h2><%= user.name %></h2>
+    <button id="leave">Leave from this room</button>
+    <h2><%= user.name %> <span id="status"/></h2>
     <div id="user_id" style="display:none"><%= user.id %></div>
-    <div>status:<span id="status"/></div>
     <div id="messages">
       <input id="message" type="text" size="40"></input>
       <input id="room_id" type="hidden" value="<%= roomId %>"></input>
