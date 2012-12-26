@@ -10,10 +10,7 @@ exports.index = function(req, res){
   var rooms = new Array();
   var Room = model.Room;
   Room.find().sort({ created: 1, updated: -1}).exec(function(err, docs) {
-    for(var i = 0; i < docs.length; i++) {
-      rooms.push(docs[i]);
-    }
-    res.render('index', { title: 'WS Chat', rooms: rooms, user: req.user });
+    res.render('index', { title: 'WS Chat', rooms: docs, user: req.user });
   });
 };
 
@@ -228,4 +225,14 @@ exports.goSignIn = function(req, res, next){
       res.redirect( "/signIn");
     }
   }
+};
+
+//Ajax handler for Sencha
+exports.ajaxRooms = function(req, res){
+  var rooms = new Array();
+  var Room = model.Room;
+  Room.find().sort({ created: 1, updated: -1}).exec(function(err, docs) {
+    var jsonRes = { rooms: docs};
+    res.json( jsonRes);
+  });
 };
