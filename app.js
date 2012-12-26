@@ -44,6 +44,10 @@ app.post('/status', routes.status);
 app.get('/signIn', routes.signIn);
 app.get('/goSignIn', routes.goSignIn);
 
+//To return json for Sencha UI
+app.get('/ajax/rooms.json', routes.ajaxRooms);
+
+
 var server = http.createServer(app);
 server.listen(app.get('port'), function(){
 	console.log("Express server listening on port " + app.get('port'));
