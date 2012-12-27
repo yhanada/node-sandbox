@@ -7,14 +7,12 @@ Ext.define('WSChat.view.RoomsList', {
     config: {
         title: 'Rooms',
         iconCls: 'info',
-        items: [
-            {
-              docked: 'top',
-              xtype: 'titlebar',
-              title: 'Available Rooms'
-            },
-        ],
         store: 'Rooms',
+        scrollable: {
+          direction: 'vertical',
+          directionLock: true
+        },
+        disableSelection: true,
         itemTpl: '<span style="display:inline-block;width:90px;text-align:left;">'+
                  '{title}' +
                  '</span>' +

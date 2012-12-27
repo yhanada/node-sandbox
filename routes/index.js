@@ -229,10 +229,34 @@ exports.goSignIn = function(req, res, next){
 
 //Ajax handler for Sencha
 exports.ajaxRooms = function(req, res){
-  var rooms = new Array();
   var Room = model.Room;
   Room.find().sort({ created: 1, updated: -1}).exec(function(err, docs) {
     var jsonRes = { rooms: docs};
     res.json( jsonRes);
+  });
+};
+
+exports.ajaxComments = function(req, res){
+  var Room = model.Room;
+  var Comment = model.Comment;
+
+  var roomId = req.query.room_id ? req.query.room_id : '50cc11d62bd7de6f14000006';//debug
+  console.log(roomId);
+  Room.findById(roomId, function(err, room) {
+    if (err) {
+      res.send(404);
+      return;
+    }
+
+    var title = room.title;
+    var query = Comment.find({room_id: roomId}).sort('-created').limit(10);
+    query.exec(function(err, comments) {
+      if (err) {
+        res.send(500);
+        return;
+      }
+      var obj = { title: title, roomId: roomId, comments: comments, user: req.user };
+      res.json( obj);
+    });
   });
 };

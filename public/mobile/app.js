@@ -7,7 +7,7 @@ Ext.Loader.setPath({
 
 Ext.application({
     models: ["Comment","Room"],
-    stores: ["Rooms"],
+    stores: ["Rooms","Comments"],
 
     name: 'WSChat',
 
@@ -40,7 +40,8 @@ Ext.application({
         Ext.fly('appLoadingIndicator').destroy();
 
         // Initialize the main view
-        Ext.Viewport.add(Ext.create('WSChat.view.Main'));
+        //Ext.Viewport.add(Ext.create('WSChat.view.Main'));
+        Ext.Viewport.add(Ext.create('WSChat.view.MainNavi'));
     },
 
     onUpdated: function() {

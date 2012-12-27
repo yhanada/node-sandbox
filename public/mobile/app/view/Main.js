@@ -4,7 +4,8 @@ Ext.define('WSChat.view.Main', {
     requires: [
         'Ext.TitleBar',
         'Ext.Video',
-        'WSChat.view.RoomsList'
+        'WSChat.view.RoomsList',
+        'WSChat.view.CommentsList'
     ],
     config: {
         tabBarPosition: 'bottom',
@@ -12,6 +13,9 @@ Ext.define('WSChat.view.Main', {
         items: [
             {
               xtype: 'roomslist'
+            },
+            {
+              xtype: 'commentslist'
             },
             {
                 title: 'Welcome',
