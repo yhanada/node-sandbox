@@ -6,13 +6,16 @@ Ext.Loader.setPath({
 //</debug>
 
 Ext.application({
+    controllers: ["ChatController"],
+
     models: ["Comment","Room"],
     stores: ["Rooms","Comments"],
 
     name: 'WSChat',
 
     requires: [
-        'Ext.MessageBox'
+        'Ext.MessageBox',
+        'WSChat.view.MainNavi'
     ],
 
     views: ['Main'],
