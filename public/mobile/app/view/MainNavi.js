@@ -7,20 +7,21 @@ Ext.define('WSChat.view.MainNavi', {
     ],
     config: {
         title: 'WSChat',
-      
+        navigationBar: {
+            items: [
+                {
+                    xtype: 'button',
+                    id: 'postviewbutton',
+                    text: 'post',
+                    align : 'right',
+                    hidden : false,
+                }
+            ]
+        },
         items: [
             {
               xtype: 'roomslist',
-              listeners: {
-                itemtap: function( list, index, item, record){
-                  var commentsView = Ext.create('WSChat.view.CommentsList');
-                  commentsView.getStore().getProxy().setExtraParam('room_id', record.get('_id'));
-                  commentsView.getStore().removeAll(true);
-                  commentsView.getStore().load();
-                  this.up('mainnavi').push(commentsView);
-                }
-              }
             },
-        ]
+        ],
     }
 });
