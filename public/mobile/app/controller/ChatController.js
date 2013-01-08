@@ -70,7 +70,6 @@ Ext.define('WSChat.controller.ChatController', {
             return;
           }
           
-          console.log(data);
           var comment = Ext.create( 'WSChat.model.Comment',
               {
                 _id:data._id,
