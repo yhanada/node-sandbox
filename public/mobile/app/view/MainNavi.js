@@ -14,7 +14,7 @@ Ext.define('WSChat.view.MainNavi', {
                     id: 'postviewbutton',
                     text: 'post',
                     align : 'right',
-                    hidden : false,
+                    hidden : true,
                 }
             ]
         },
