@@ -1,10 +1,16 @@
 Ext.define('WSChat.controller.ChatController', {
     extend: 'Ext.app.Controller',
+    requires: [
+               'WSChat.view.RoomsList',
+               'WSChat.view.CommentsList',
+               'WSChat.view.PostForm'
+           ],
     
     config: {
         socket: null,
         currentRoomId: null,
         formView: null,
+        commentsView: null,
         refs: {
           mainNavi: 'mainnavi',
           postViewButton: '#postviewbutton',
@@ -23,9 +29,8 @@ Ext.define('WSChat.controller.ChatController', {
           roomsList: {
             //To show comments
             itemtap: function( list, index, item, record){
-              var commentsView = Ext.create('WSChat.view.CommentsList');
+              var commentsView = this.getCommentsView();
               commentsView.getStore().getProxy().setExtraParam('room_id', record.get('_id'));
-              commentsView.getStore().removeAll(true);
               commentsView.getStore().load();
               list.up('mainnavi').push(commentsView);
               this.setCurrentRoomId( record.get('_id'));
@@ -59,6 +64,9 @@ Ext.define('WSChat.controller.ChatController', {
     launch: function(app) {
         //store popup view
         this.setFormView( Ext.create('WSChat.view.PostForm'));      
+        //store 
+        this.setCommentsView( Ext.create('WSChat.view.CommentsList'));
+
         
         //connect by socket.io
         var socket = io.connect();

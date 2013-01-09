@@ -23,5 +23,6 @@ Ext.define('WSChat.view.MainNavi', {
               xtype: 'roomslist',
             },
         ],
+        autoDestroy: false
     }
 });
