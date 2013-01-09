@@ -2,7 +2,8 @@ Ext.define('WSChat.view.CommentsList', {
     extend: 'Ext.List',
     xtype: 'commentslist',
     requires: [
-        'Ext.data.Store'
+        'Ext.data.Store',
+        'WSChat.view.CommentsListItem'
     ],
     config: {
         title: 'Comments',
@@ -13,15 +14,7 @@ Ext.define('WSChat.view.CommentsList', {
             directionLock: true
         },
         disableSelection: true,
-        itemTpl: '<span style="display:inline-block;width:50px;text-align:left;">'+
-                    '<img src="http://graph.facebook.com/{user_id}/picture"/>'+
-                 '</span>'+
-                 '<span style="display:inline-block;width:auto;>'+
-                 '<span style="display:inline-block;width:20%;text-align:left;">{user_name}</span>'+
-                 '<span style="display:inline-block;width:80%;text-align:left;">'+
-                 '{message}' +
-                 '</span>' +
-                 '</span>',
-                 
+        useComponents: true,
+        defaultType: 'commentslistitem'
     }
 });
