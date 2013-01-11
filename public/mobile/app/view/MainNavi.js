@@ -15,7 +15,16 @@ Ext.define('WSChat.view.MainNavi', {
                     text: 'post',
                     align : 'right',
                     hidden : true,
+                },
+                {
+                  xtype: 'button',
+                  id: 'createroomviewbutton',
+                  iconCls: 'add',
+                  iconMask: true,                  
+                  align : 'right',
+                  hidden : false,
                 }
+
             ]
         },
         items: [

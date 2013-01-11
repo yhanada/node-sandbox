@@ -267,3 +267,23 @@ exports.ajaxComments = function(req, res){
     });
   });
 };
+
+exports.ajaxCreateRoom = function( req, res){
+  if (!req.body.name) {
+    //error
+    res.json({result:'error',error:'empty name'});
+  }
+  var roomName = req.body.name;
+  var Room = model.Room;
+  var newRoom = new Room();
+  newRoom.title = roomName;
+  newRoom.created = newRoom.updated = Date.now();
+  newRoom.save(function(err) {
+    if (!err) {
+      res.json({result:'success'});
+    } else {
+      console.error('Failed to save');
+      res.json({result:'error',error:err});
+    }
+  });
+};

@@ -15,7 +15,8 @@ Ext.application({
 
     requires: [
         'Ext.MessageBox',
-        'WSChat.view.MainNavi'
+        'WSChat.view.MainNavi',
+        //'WSChat.view.List'
     ],
 
     views: ['Main'],
@@ -45,6 +46,9 @@ Ext.application({
         // Initialize the main view
         //Ext.Viewport.add(Ext.create('WSChat.view.Main'));
         Ext.Viewport.add(Ext.create('WSChat.view.MainNavi'));
+        
+        //TEST
+        //Ext.Viewport.add(Ext.create('WSChat.view.List'));
     },
 
     onUpdated: function() {
