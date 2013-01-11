@@ -48,6 +48,7 @@ app.get('/goSignIn', routes.goSignIn);
 app.get('/ajax/rooms.json', routes.ajaxRooms);
 app.get('/ajax/comments.json', routes.ajaxComments);
 app.post('/ajax/create/room.json', routes.ajaxCreateRoom);
+app.delete('/ajax/delete/room.json', routes.ajaxDeleteRoom);
 
 
 var server = http.createServer(app);

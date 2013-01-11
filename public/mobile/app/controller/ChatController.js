@@ -17,6 +17,7 @@ Ext.define('WSChat.controller.ChatController', {
           mainNavi: 'mainnavi',
           postViewButton: '#postviewbutton',
           createRoomViewButton: '#createroomviewbutton',
+          editRoomsButton: '#editroomsbutton',
 
           roomsList: 'roomslist',
           postButton:'postform #postButton',
@@ -26,6 +27,7 @@ Ext.define('WSChat.controller.ChatController', {
           createRoomButton:'createroomform #createRoomButton',
           roomNameTextField:'createroomform #roomNameTextField',
           roomsList: 'mainnavi roomslist'
+            
         },
         control: {
           mainNavi: {
@@ -33,6 +35,7 @@ Ext.define('WSChat.controller.ChatController', {
             back: function( naviView, eOpt){
               this.getPostViewButton().hide();
               this.getCreateRoomViewButton().show();
+              this.getEditRoomsButton().show();
             }
           },
           roomsList: {
@@ -45,6 +48,52 @@ Ext.define('WSChat.controller.ChatController', {
               this.setCurrentRoomId( record.get('_id'));
               this.getPostViewButton().show();
               this.getCreateRoomViewButton().hide();
+              this.getEditRoomsButton().hide();
+            },
+            //To delete room
+            deleteitemtap: function( list, index, item, record){
+              var self = this;
+              console.log(record);
+              console.log('roomId:'+record.get('_id'));
+              Ext.Ajax.request({
+                method: 'delete',
+                url: '/ajax/delete/room.json',
+                jsonData: 
+                    { roomId: record.get('_id')},
+                success: function( response, opts){
+                  var result = Ext.decode(response.responseText);
+                  if(result.result == 'success'){
+                    //reload rooms list
+                    self.getRoomsList().getStore().load();
+                  }
+                },
+                failure: function( response, opts){
+                  //DONOTHING
+                },
+              });
+            }
+          },
+          editRoomsButton: {
+            //to show a view of posting a comment.
+            tap: function( button, event, opt){
+              var iconCls = button.getIconCls();
+              var editable = true;
+              if( iconCls == 'compose'){
+                  button.setIconCls('');
+                  button.setText('Cancel');
+                  this.getCreateRoomViewButton().disable();
+                  editable = true;
+              }else{
+                  button.setIconCls('compose');
+                  button.setText('');
+                  this.getCreateRoomViewButton().enable();
+                  editable = false;
+              }
+              
+              var listItems = this.getRoomsList().query('.roomslistitem');
+              listItems.forEach(function(listItem){
+                  listItem.setIsEditable(editable);
+              });
             }
           },
           createRoomViewButton: {

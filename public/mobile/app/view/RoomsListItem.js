@@ -7,21 +7,52 @@ Ext.define('WSChat.view.RoomsListItem', {
         'Ext.Label',
     ],
     config: {
-        layout: 'fit',
+        //Editable
+        isEditable: false,  
+      
+        layout: {
+            type: 'fit',
+            align: 'streach',
+            pack: 'center',
+        },
         items: [
+                {
+                  xtype: 'panel',
+                  docked: 'left',
+                  layout: {
+                    type: 'hbox',
+                    pack: 'center',
+                    align: 'center',
+                  },
+                  items: [
+                          {
+                              xtype: 'button',
+                              itemId:'delete',
+                              iconCls: 'delete',
+                              ui: 'decline',
+                              iconMask: true,
+                              hidden: true,
+                              listeners: {
+                                  tap: function( comp, event, eOpt){
+                                    var listItem = comp.up('roomslistitem');
+                                    listItem.fireDeleteItemTap( listItem, comp, event, eOpt);
+                                  }
+                              }
+                          }]
+              },
                 {
                     xtype: 'button',
                     itemId:'room',
                     ui: 'plain',
-                    flex: 1,
+                    //flex: 1,
                     width: "100%", height: "100%",
                     listeners: {
                         tap: function( comp, event, eOpt){
-                          //console.log(comp);
-                          this.getParent().fireItemTap( comp, event, eOpt);
+                          var listItem = comp.up('roomslistitem');
+                          listItem.fireItemTap( listItem, comp, event, eOpt);
                         }
                     }
-                },//, bubbleEvents: ''//, disabled: true},
+                },
                 {
                     xtype: 'label',
                     itemId:'date',
@@ -36,9 +67,6 @@ Ext.define('WSChat.view.RoomsListItem', {
                 ],
         listeners: {
             updatedata: function( listItem, newData, eOpts ){
-                
-                //console.log(newData);
-              
                 if(newData != null){
                   listItem.getComponent('room').setHtml(newData.title);
                   listItem.getComponent('date').setHtml(newData.updated.toLocaleString());
@@ -47,14 +75,32 @@ Ext.define('WSChat.view.RoomsListItem', {
         }        
     },
     
-    fireItemTap: function( comp, event, eOpt){
-        var listItem = comp.getParent();
-        console.log(this);
-        console.log(comp);
-        //console.log(listItem);
-        //console.log(listItem.getRecord());
-        //console.log(listItem.getParent());
-        //console.log(listItem.getXTypes());
-        listItem.getParent().getParent().fireEvent( 'itemtap', listItem.getParent(), -1, listItem, listItem.getRecord());
+    fireItemTap: function( listItem, comp, event, eOpt){
+        if( this.getIsEditable()){
+            return;
+        }  
+      
+        var list = listItem.up('roomslist');
+        list.fireEvent( 'itemtap', list, -1, listItem, listItem.getRecord());
+    },
+
+    fireDeleteItemTap: function( listItem, comp, event, eOpt){
+      if( !this.getIsEditable()){
+          return;
+      }  
+    
+      var list = listItem.up('roomslist');
+      list.fireEvent( 'deleteitemtap', list, -1, listItem, listItem.getRecord());
+    },
+    
+    updateIsEditable: function( newValue, oldValue){
+          var button = this.down('#delete');
+          if( button){
+              if( newValue){
+                  button.show();
+              }else{
+                  button.hide();
+              }
+          }
     }
 });
