@@ -47,6 +47,7 @@ app.get('/goSignIn', routes.goSignIn);
 //To return json for Sencha UI
 app.get('/ajax/rooms.json', routes.ajaxRooms);
 app.get('/ajax/comments.json', routes.ajaxComments);
+app.post('/ajax/create/room.json', routes.ajaxCreateRoom);
 
 
 var server = http.createServer(app);

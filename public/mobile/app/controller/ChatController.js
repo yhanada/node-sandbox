@@ -3,27 +3,36 @@ Ext.define('WSChat.controller.ChatController', {
     requires: [
                'WSChat.view.RoomsList',
                'WSChat.view.CommentsList',
-               'WSChat.view.PostForm'
+               'WSChat.view.PostForm',
+               'WSChat.view.CreateRoomForm',
            ],
     
     config: {
         socket: null,
         currentRoomId: null,
         formView: null,
+        createRoomFormView: null,
         commentsView: null,
         refs: {
           mainNavi: 'mainnavi',
           postViewButton: '#postviewbutton',
+          createRoomViewButton: '#createroomviewbutton',
+
           roomsList: 'roomslist',
           postButton:'postform #postButton',
           commentTextArea:'postform #commentTextArea',
-          commentsList: 'mainnavi commentslist'
+          commentsList: 'mainnavi commentslist',
+          
+          createRoomButton:'createroomform #createRoomButton',
+          roomNameTextField:'createroomform #roomNameTextField',
+          roomsList: 'mainnavi roomslist'
         },
         control: {
           mainNavi: {
             //Hooking To back to previous view via the Navigation UI back.
             back: function( naviView, eOpt){
               this.getPostViewButton().hide();
+              this.getCreateRoomViewButton().show();
             }
           },
           roomsList: {
@@ -35,6 +44,39 @@ Ext.define('WSChat.controller.ChatController', {
               list.up('mainnavi').push(commentsView);
               this.setCurrentRoomId( record.get('_id'));
               this.getPostViewButton().show();
+              this.getCreateRoomViewButton().hide();
+            }
+          },
+          createRoomViewButton: {
+            //to show a view of posting a comment.
+            tap: function( button, event, opt){
+              var formView = this.getCreateRoomFormView();
+              //console.log(this.getRoomNameTextField());
+              this.getRoomNameTextField().setValue("");
+              formView.showBy(button);
+            }
+          },
+          createRoomButton: {
+            //Post a comment to current room.
+            tap: function( button, event, opt){
+              var self = this;
+              Ext.Ajax.request({
+                method: 'post',
+                url: '/ajax/create/room.json',
+                jsonData: 
+                    { name: this.getRoomNameTextField().getValue()},
+                success: function( response, opts){
+                  var result = Ext.decode(response.responseText);
+                  if(result.result == 'success'){
+                    //reload rooms list
+                    self.getRoomsList().getStore().load();
+                    button.getParent().hide();
+                  }
+                },
+                failure: function( response, opts){
+                  //DONOTHING
+                },
+              });
             }
           },
           postViewButton: {
@@ -64,6 +106,8 @@ Ext.define('WSChat.controller.ChatController', {
     launch: function(app) {
         //store popup view
         this.setFormView( Ext.create('WSChat.view.PostForm'));      
+        //store popup view for creating a room
+        this.setCreateRoomFormView( Ext.create('WSChat.view.CreateRoomForm'));      
         //store 
         this.setCommentsView( Ext.create('WSChat.view.CommentsList'));
 

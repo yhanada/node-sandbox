@@ -2,7 +2,8 @@ Ext.define('WSChat.view.RoomsList', {
     extend: 'Ext.List',
     xtype: 'roomslist',
     requires: [
-        'Ext.data.Store'
+        'Ext.data.Store',
+        'WSChat.view.RoomsListItem',
     ],
     config: {
         title: 'Rooms',
@@ -13,9 +14,12 @@ Ext.define('WSChat.view.RoomsList', {
           directionLock: true
         },
         disableSelection: true,
-        itemTpl: '<span style="display:inline-block;width:90px;text-align:left;">'+
+        useComponents: true,
+        defaultType: 'roomslistitem',
+        
+        /*itemTpl: '<span style="display:inline-block;width:90px;text-align:left;">'+
                  '{title}' +
                  '</span>' +
-                 '<span>{updated}</span>',
+                 '<span>{updated}</span>',*/
     }
 });
