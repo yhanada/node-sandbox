@@ -12,3 +12,6 @@ css_path = File.join(dir, "..", "css")
 images_dir = File.join(dir, "..", "images")
 output_style = :compressed
 environment = :production
+# for normal build
+#output_style = :expanded
+#environment = :testing
