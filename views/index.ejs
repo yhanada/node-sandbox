@@ -9,7 +9,11 @@
   <body>
     <h1>Welcome to <%= title %></h1>
     <h2><img src="http://graph.facebook.com/<%= user.id %>/picture"/> <%= user.name %></h2>
-    <h3><a href="/mobile">Go Sencha</a></h3>
+    <h3>
+      Go Sencha:<a href="/mobile/build/WSChat/production/">production</a>
+      <a href="/mobile/build/WSChat/package/">package</a>
+      <a href="/mobile/">raw</a>
+    </h3>
     <h2>create room</h2>
     <div>
       <form method="POST" action="/create">
