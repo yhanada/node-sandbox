@@ -23,6 +23,14 @@ Ext.define('WSChat.view.MainNavi', {
                   iconMask: true,                  
                   align : 'right',
                   hidden : false,
+                },
+                {
+                  xtype: 'button',
+                  id: 'editroomsbutton',
+                  iconCls: 'compose',
+                  iconMask: true,                  
+                  align : 'left',
+                  hidden : false,
                 }
 
             ]

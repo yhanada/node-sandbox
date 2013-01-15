@@ -287,3 +287,29 @@ exports.ajaxCreateRoom = function( req, res){
     }
   });
 };
+
+exports.ajaxDeleteRoom = function( req, res){
+  if (!req.body.roomId) {
+    //error
+    res.json({result:'error',error:'empty _id'});
+  }
+  
+  var Room = model.Room;
+
+  var roomId = req.body.roomId ? req.body.roomId : '';//debug
+  console.log(roomId);
+  Room.findById(roomId, function(err, room) {
+    if (err) {
+      res.send(404);
+      return;
+    }
+
+    room.remove(function(error, room){
+        if(error){
+            res.json({result:'failure', error: error});
+        }else{
+            res.json({result:'success'});
+        }
+    });
+  });
+};
