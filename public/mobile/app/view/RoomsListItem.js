@@ -54,22 +54,37 @@ Ext.define('WSChat.view.RoomsListItem', {
                     }
                 },
                 {
-                    xtype: 'label',
-                    itemId:'date',
+                    xtype: 'panel',
                     docked: 'bottom',
-                    style: 'font-size: 75%',
-                    listeners: {
-                      tap: function( comp, event, eOpt){
-                        console.log(comp);
-                      }
-                    }
+                    items: [
+                        {
+                          xtype: 'label',
+                          itemId:'date',
+                          docked: 'left',
+                          style: 'font-size: 75%',
+                        },
+                      {
+                        xtype: 'label',
+                        itemId:'isNew',
+                        docked: 'left',
+                        style: { 'font-size': "75%",color:"#ff0000"},
+                        html: '<strong>New!</strong>',
+                      },
+                    ]
                 },
                 ],
         listeners: {
             updatedata: function( listItem, newData, eOpts ){
                 if(newData != null){
                   listItem.getComponent('room').setHtml(newData.title);
-                  listItem.getComponent('date').setHtml(newData.updated.toLocaleString());
+                  listItem.down('#date').setHtml(newData.updated.toLocaleString());
+                  
+                  var currentDate = new Date();
+                  if( currentDate.getTime()-newData.updated.getTime() < 4*60*60*1000){
+                    listItem.down('#isNew').show();
+                  }else{
+                    listItem.down('#isNew').hide();
+                  }
                 }
             }
         }        
