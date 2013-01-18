@@ -36,15 +36,17 @@ Ext.define('WSChat.controller.ChatController', {
               this.getPostViewButton().hide();
               this.getCreateRoomViewButton().show();
               this.getEditRoomsButton().show();
+              //Remove comments
+              this.getCommentsView().getStore().remove(this.getCommentsView().getStore().getRange());
             }
           },
           roomsList: {
             //To show comments
             itemtap: function( list, index, item, record){
               var commentsView = this.getCommentsView();
+              list.up('mainnavi').push(commentsView);
               commentsView.getStore().getProxy().setExtraParam('room_id', record.get('_id'));
               commentsView.getStore().load();
-              list.up('mainnavi').push(commentsView);
               this.setCurrentRoomId( record.get('_id'));
               this.getPostViewButton().show();
               this.getCreateRoomViewButton().hide();
